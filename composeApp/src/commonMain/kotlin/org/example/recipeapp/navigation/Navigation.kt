@@ -4,37 +4,67 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.transitions.SlideTransition
-import org.example.recipeapp.screens.favorites.FavoritesScreen
-import org.example.recipeapp.screens.home.HomeScreen
-import org.example.recipeapp.screens.search.SearchScreen
-import org.example.recipeapp.ui.components.BottomBar
-import org.example.recipeapp.ui.components.BottomItem
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.TabNavigator
+import kotlin.requireNotNull
 
 
 @Composable
 fun RootNav() {
-    var selected by remember { mutableStateOf(0) }
-    val tabs = listOf(
-        BottomItem("Home", Icons.Default.Home, HomeScreen),
-        BottomItem("Search", Icons.Default.Search, SearchScreen),
-        BottomItem("Favorites", Icons.Default.Favorite, FavoritesScreen),
-    )
+    TabNavigator(
+        HomeTab
+    ) { tabNavigator ->
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface
+                ) {
+                    val tabToSelectedIcon = mapOf(
+                        HomeTab to Icons.Filled.Home,
+                        SearchTab to Icons.Filled.Search,
+                        FavoritesTab to Icons.Filled.Favorite
+                    )
 
-    Scaffold(
-        bottomBar = {
-            BottomBar(
-                items = tabs,
-                selectedIndex = selected,
-                onSelect = { selected = it }
-            )
-        }
-    ) { paddings ->
-        Navigator(tabs[selected].screen) { nav ->
-            SlideTransition(nav)
+                    val allTabs = listOf(HomeTab, SearchTab, FavoritesTab)
+                    allTabs.forEach { tab ->
+                        val isSelected = tabNavigator.current == tab
+                        val currentIconPainter = if (isSelected) rememberVectorPainter(image = requireNotNull(tabToSelectedIcon[tab])) else tab.options.icon
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = { tabNavigator.current = tab },
+                            icon = {
+                                if (currentIconPainter != null)
+                                    Icon(
+                                        painter = currentIconPainter,
+                                        contentDescription = tab.options.title
+                                    )
+                            },
+                            label = { Text(tab.options.title) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                indicatorColor = Color.Transparent
+                            )
+                        )
+                    }
+                }
+            }
+        ) {
+            CurrentTab()
         }
     }
 }
