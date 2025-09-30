@@ -1,4 +1,4 @@
-package org.example.recipeapp.screens.details
+package org.example.recipeapp.presentation.details
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

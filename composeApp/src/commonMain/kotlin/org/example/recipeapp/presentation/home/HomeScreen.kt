@@ -1,4 +1,4 @@
-package org.example.recipeapp.screens.home
+package org.example.recipeapp.presentation.home
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
@@ -12,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import org.example.recipeapp.screens.details.DetailScreen
+import org.example.recipeapp.presentation.details.DetailScreen
 import org.example.recipeapp.screens.filters.FiltersScreen
 import org.example.recipeapp.ui.components.RecipeCard
 import org.example.recipeapp.ui.components.SectionTitle

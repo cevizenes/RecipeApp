@@ -1,4 +1,4 @@
-package org.example.recipeapp.screens.search
+package org.example.recipeapp.presentation.search
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen

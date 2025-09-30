@@ -11,8 +11,8 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
 import org.example.recipeapp.screens.favorites.FavoritesScreen
-import org.example.recipeapp.screens.home.HomeScreen
-import org.example.recipeapp.screens.search.SearchScreen
+import org.example.recipeapp.presentation.home.HomeScreen
+import org.example.recipeapp.presentation.search.SearchScreen
 
 object HomeTab : Tab {
     override val options: TabOptions
