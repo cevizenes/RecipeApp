@@ -4,7 +4,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import org.example.recipeapp.core.network.HttpClientFactory
+import org.example.recipeapp.core.network.createHttpClient
 import org.example.recipeapp.data.remote.api.SpoonacularApi
 import org.example.recipeapp.data.repository.RecipeRepositoryImpl
 import org.example.recipeapp.domain.repository.RecipeRepository
@@ -16,11 +16,11 @@ import org.example.recipeapp.presentation.home.HomeViewModel
 import org.example.recipeapp.presentation.search.SearchViewModel
 
 val networkModule = module {
-    single { HttpClientFactory().create() }
+    single { createHttpClient() }
     single {
         SpoonacularApi(
             client = get(),
-            apiKey = getProperty("SPOONACULAR_API_KEY", "YOUR_API_KEY_HERE")
+            apiKey = getProperty("SPOONACULAR_API_KEY", "fc8dbc9651ec4977bee3bddeb069fadb")
         )
     }
 }

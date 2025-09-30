@@ -12,15 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 
 @Composable
 fun RecipeCard(
     title: String,
     subtitle: String,
     badge: String? = null,
+    imageUrl: String? = null,
     onClick: () -> Unit,
-    image: (@Composable BoxScope.() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -29,18 +31,27 @@ fun RecipeCard(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Box(modifier = Modifier.height(180.dp)) {
-            image?.invoke(this)
+
+            if (imageUrl != null) {
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = title,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.85f))
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
                     .padding(16.dp)
             ) {
                 if (badge != null) {
                     Text(
                         badge,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier
                             .clip(RoundedCornerShape(6.dp))
@@ -49,9 +60,17 @@ fun RecipeCard(
                     )
                     Spacer(Modifier.height(6.dp))
                 }
-                Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 Spacer(Modifier.height(4.dp))
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.8f))
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+                )
             }
         }
     }

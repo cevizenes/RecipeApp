@@ -1,5 +1,7 @@
 package org.example.recipeapp.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -12,6 +14,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.CurrentTab
@@ -40,7 +43,9 @@ fun RootNav() {
                     val allTabs = listOf(HomeTab, SearchTab, FavoritesTab)
                     allTabs.forEach { tab ->
                         val isSelected = tabNavigator.current == tab
-                        val currentIconPainter = if (isSelected) rememberVectorPainter(image = requireNotNull(tabToSelectedIcon[tab])) else tab.options.icon
+                        val currentIconPainter = if (isSelected) rememberVectorPainter(
+                            image = requireNotNull(tabToSelectedIcon[tab])
+                        ) else tab.options.icon
                         NavigationBarItem(
                             selected = isSelected,
                             onClick = { tabNavigator.current = tab },
@@ -63,8 +68,10 @@ fun RootNav() {
                     }
                 }
             }
-        ) {
-            CurrentTab()
+        ) { paddingValues ->
+            Box(modifier = Modifier.padding(paddingValues)) {
+                CurrentTab()
+            }
         }
     }
 }

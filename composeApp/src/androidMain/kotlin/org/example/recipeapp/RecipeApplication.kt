@@ -12,9 +12,6 @@ class RecipeApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RecipeApplication)
-            properties(mapOf(
-                "SPOONACULAR_API_KEY" to "34eddf106359410ba352ced0749915c5"
-            ))
             modules(appModules)
         }
     }

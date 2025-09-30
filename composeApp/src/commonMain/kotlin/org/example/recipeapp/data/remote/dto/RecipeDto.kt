@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SearchRecipesResponse(
-    val results: List<RecipeDto>,
+    val results: List<RecipeDto> = emptyList(),
     val offset: Int,
     val number: Int,
     val totalResults: Int

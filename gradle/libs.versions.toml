@@ -12,10 +12,11 @@ androidx-testExt = "1.3.0"
 composeMultiplatform = "1.9.0"
 junit = "4.13.2"
 kotlin = "2.2.20"
-ktor = "3.0.2"
-koin = "4.0.2"
-voyager = "1.0.0"
-kotlinx-serialization = "1.7.3"
+ktor = "3.3.0"
+koin = "4.1.1"
+voyager = "1.0.1"
+kotlinx-serialization = "1.9.0"
+coil = "3.3.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -46,6 +47,8 @@ voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", vers
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
