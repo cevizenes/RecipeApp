@@ -20,7 +20,7 @@ val networkModule = module {
     single {
         SpoonacularApi(
             client = get(),
-            apiKey = getProperty("SPOONACULAR_API_KEY", "fc8dbc9651ec4977bee3bddeb069fadb")
+            apiKey = getProperty("SPOONACULAR_API_KEY", "b4d733ad11a54b9da10b0356cfa13e4b")
         )
     }
 }
