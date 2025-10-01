@@ -26,6 +26,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.example.recipeapp.domain.model.Ingredient
 import org.example.recipeapp.domain.model.RecipeStep
+import org.example.recipeapp.navigation.LocalBottomBarVisible
+import org.example.recipeapp.presentation.details.DetailsEffect.*
 import org.koin.compose.koinInject
 
 data class DetailScreen(val recipeId: Int) : Screen {
@@ -35,6 +37,15 @@ data class DetailScreen(val recipeId: Int) : Screen {
         val viewModel = koinInject<DetailsViewModel>()
         val state by viewModel.state.collectAsState()
 
+        val snackBarHostState = remember { SnackbarHostState() }
+
+        val bottomBarVisible = LocalBottomBarVisible.current
+
+        DisposableEffect(Unit) {
+            bottomBarVisible.value = false
+            onDispose { bottomBarVisible.value = true }
+        }
+
         LaunchedEffect(recipeId) {
             viewModel.onIntent(DetailsIntent.LoadRecipe(recipeId))
         }
@@ -42,9 +53,20 @@ data class DetailScreen(val recipeId: Int) : Screen {
         LaunchedEffect(Unit) {
             viewModel.effect.collect { effect ->
                 when (effect) {
-                    is DetailsEffect.ShowError -> {
+                    is ShowError -> {
+                        snackBarHostState.showSnackbar(
+                            message = effect.message,
+                            withDismissAction = true,
+                            duration = SnackbarDuration.Long
+                        )
                     }
-                    is DetailsEffect.ShowMessage -> {
+
+                    is ShowMessage -> {
+                        snackBarHostState.showSnackbar(
+                            message = effect.message,
+                            withDismissAction = true,
+                            duration = SnackbarDuration.Long
+                        )
                     }
                 }
             }
@@ -53,7 +75,8 @@ data class DetailScreen(val recipeId: Int) : Screen {
         DetailContent(
             state = state,
             onIntent = viewModel::onIntent,
-            onBack = { navigator.pop() }
+            onBack = { navigator.pop() },
+            snackBarHostState = snackBarHostState
         )
     }
 }
@@ -62,7 +85,8 @@ data class DetailScreen(val recipeId: Int) : Screen {
 private fun DetailContent(
     state: DetailsState,
     onIntent: (DetailsIntent) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    snackBarHostState: SnackbarHostState,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         when {
@@ -262,7 +286,10 @@ private fun DetailContent(
                     recipe.nutrition?.let { nutrition ->
                         item {
                             Spacer(Modifier.height(24.dp))
-                            SectionHeader("Nutrition Information", Modifier.padding(horizontal = 20.dp))
+                            SectionHeader(
+                                "Nutrition Information",
+                                Modifier.padding(horizontal = 20.dp)
+                            )
                             Spacer(Modifier.height(12.dp))
                         }
 
@@ -316,6 +343,13 @@ private fun DetailContent(
                 }
             }
         }
+
+        SnackbarHost(
+            hostState = snackBarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+        )
     }
 }
 
@@ -324,7 +358,7 @@ private fun InfoCard(
     title: String,
     value: String,
     unit: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier,
@@ -460,7 +494,7 @@ private fun NutritionRow(label: String, value: String) {
 private fun SimilarRecipeCard(
     title: String,
     time: String,
-    difficulty: String
+    difficulty: String,
 ) {
     Card(
         modifier = Modifier

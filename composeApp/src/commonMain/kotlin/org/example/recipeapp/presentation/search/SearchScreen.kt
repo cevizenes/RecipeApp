@@ -5,6 +5,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.example.recipeapp.presentation.details.DetailScreen
+import org.example.recipeapp.presentation.search.SearchEffect.*
 import org.example.recipeapp.ui.components.FilterChip
 import org.example.recipeapp.ui.components.RecipeCard
 import org.example.recipeapp.ui.components.SectionTitle
@@ -27,10 +29,17 @@ object SearchScreen : Screen {
         val state by searchViewModel.state.collectAsState()
         val navigator = LocalNavigator.current
 
+        val snackBarHostState = remember { SnackbarHostState() }
+
         LaunchedEffect(Unit) {
             searchViewModel.effect.collect { effect ->
                 when (effect) {
-                    is SearchEffect.ShowError -> {
+                    is ShowError -> {
+                        snackBarHostState.showSnackbar(
+                            message = effect.message,
+                            withDismissAction = true,
+                            duration = SnackbarDuration.Long
+                        )
                     }
                 }
             }
@@ -41,17 +50,19 @@ object SearchScreen : Screen {
             onIntent = searchViewModel::onIntent,
             onRecipeClick = { recipeId ->
                 navigator?.push(DetailScreen(recipeId))
-            }
+            },
+            snackBarHostState = snackBarHostState
         )
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SearchContent(
+fun SearchContent(
     state: SearchState,
     onIntent: (SearchIntent) -> Unit,
-    onRecipeClick: (Int) -> Unit
+    onRecipeClick: (Int) -> Unit,
+    snackBarHostState: SnackbarHostState
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         // Search bar
@@ -71,7 +82,7 @@ private fun SearchContent(
                 }
             },
             singleLine = true,
-            keyboardActions = androidx.compose.foundation.text.KeyboardActions(
+            keyboardActions = KeyboardActions(
                 onSearch = { onIntent(SearchIntent.Search) }
             )
         )
@@ -167,5 +178,12 @@ private fun SearchContent(
                 CircularProgressIndicator()
             }
         }
+
+        SnackbarHost(
+            hostState = snackBarHostState,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(16.dp)
+        )
     }
 }

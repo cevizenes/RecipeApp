@@ -23,24 +23,34 @@ class SearchViewModel(
             is SearchIntent.QueryChanged -> {
                 _state.value = _state.value.copy(query = intent.query, error = null)
             }
-            is SearchIntent.Search -> performSearch(_state.value.query)
+            is SearchIntent.Search -> performSearch(query = _state.value.query, type = null)
             is SearchIntent.QuickSearch -> {
                 _state.value = _state.value.copy(query = intent.query)
-                performSearch(intent.query)
+                performSearch(query = intent.query, type = null)
             }
             is SearchIntent.ClearSearch -> {
                 _state.value = SearchState()
             }
+            is SearchIntent.SearchByType -> {
+                _state.value = _state.value.copy(hasSearched = false, error = null)
+                performSearch(query = null, type = intent.type)
+            }
         }
     }
 
-    private fun performSearch(query: String) {
-        if (query.isBlank()) return
+    private fun performSearch(query: String?, type: String?) {
+        if ((query == null || query.isBlank()) && type.isNullOrBlank()) return
 
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
 
-            when (val result = searchRecipesUseCase(query)) {
+            when (val result = searchRecipesUseCase(
+                query = query,
+                cuisine = null,
+                diet = null,
+                type = type,
+                maxReadyTime = null
+            )) {
                 is Result.Success -> {
                     _state.value = _state.value.copy(
                         recipes = result.data,

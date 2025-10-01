@@ -15,6 +15,7 @@ sealed interface SearchIntent {
     data class QueryChanged(val query: String) : SearchIntent
     data object Search : SearchIntent
     data class QuickSearch(val query: String) : SearchIntent
+    data class SearchByType(val type: String) : SearchIntent
     data object ClearSearch : SearchIntent
 }
 

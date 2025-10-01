@@ -9,21 +9,25 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.example.recipeapp.presentation.details.DetailScreen
 import org.example.recipeapp.presentation.home.HomeEffect.*
+import org.example.recipeapp.presentation.search.SearchByCategoryScreen
 import org.example.recipeapp.screens.filters.FiltersScreen
 import org.example.recipeapp.ui.components.RecipeCard
 import org.example.recipeapp.ui.components.SectionTitle
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
 object HomeScreen : Screen {
@@ -33,10 +37,17 @@ object HomeScreen : Screen {
         val state by homeViewModel.state.collectAsState()
         val navigator = LocalNavigator.current
 
+        val snackBarHostState = remember { SnackbarHostState() }
+
         LaunchedEffect(Unit) {
             homeViewModel.effect.collect { effect ->
                 when (effect) {
                     is ShowError -> {
+                        snackBarHostState.showSnackbar(
+                            message = effect.message,
+                            withDismissAction = true,
+                            duration = SnackbarDuration.Long
+                        )
                     }
                 }
             }
@@ -50,6 +61,10 @@ object HomeScreen : Screen {
             },
             onFilterClick = {
                 navigator?.push(FiltersScreen)
+            },
+            snackBarHostState = snackBarHostState,
+            onCategoryClick = { type ->
+                navigator?.push(SearchByCategoryScreen(type))
             }
         )
     }
@@ -61,9 +76,12 @@ private fun HomeContent(
     onIntent: (HomeIntent) -> Unit,
     onRecipeClick: (Int) -> Unit,
     onFilterClick: () -> Unit,
+    snackBarHostState: SnackbarHostState,
+    onCategoryClick: (String) -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         if (state.isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
@@ -107,9 +125,19 @@ private fun HomeContent(
                 item { SectionTitle("Categories") }
                 item {
                     Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        val mapToType = mapOf(
+                            "Breakfast" to "breakfast",
+                            "Lunch" to "lunch",
+                            "Dinner" to "dinner",
+                            "Snack" to "snack"
+                        )
+
                         listOf("Breakfast", "Lunch", "Dinner", "Snack").forEach { category ->
                             SuggestionChip(
-                                onClick = { /* Navigate to category */ },
+                                onClick = {
+                                    val type = mapToType[category] ?: category.lowercase()
+                                    onCategoryClick(type)
+                                },
                                 label = { Text(category, maxLines = 1) },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
@@ -157,18 +185,12 @@ private fun HomeContent(
                 }
             }
         }
-    }
-}
 
-@Composable
-@Preview
-fun HomeScreenPreview() {
-    MaterialTheme {
-        HomeContent(
-            state = HomeState(),
-            onIntent = {},
-            onRecipeClick = {},
-            onFilterClick = {}
+        SnackbarHost(
+            hostState = snackBarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
         )
     }
 }
