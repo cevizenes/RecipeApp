@@ -1,5 +1,9 @@
 package org.example.recipeapp.navigation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
@@ -9,7 +13,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import cafe.adriel.voyager.transitions.SlideTransition
 import org.example.recipeapp.screens.favorites.FavoritesScreen
 import org.example.recipeapp.presentation.home.HomeScreen
 import org.example.recipeapp.presentation.search.SearchScreen
@@ -27,7 +30,16 @@ object HomeTab : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(HomeScreen) { SlideTransition(navigator = it) }
+        Navigator(screen = HomeScreen) { navigator ->
+            AnimatedContent(
+                targetState = navigator.lastItem,
+                transitionSpec = {
+                    fadeIn() togetherWith fadeOut()
+                }
+            ) {
+                it.Content()
+            }
+        }
     }
 }
 
@@ -36,7 +48,7 @@ object SearchTab : Tab {
         @Composable get() {
             val searchPainterIcon = rememberVectorPainter(Icons.Outlined.Search)
             return TabOptions(
-                index = 0u,
+                index = 1u,
                 title = "Search",
                 icon = searchPainterIcon
             )
@@ -44,7 +56,16 @@ object SearchTab : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(SearchScreen) { SlideTransition(navigator = it) }
+        Navigator(screen = SearchScreen) { navigator ->
+            AnimatedContent(
+                targetState = navigator.lastItem,
+                transitionSpec = {
+                    fadeIn() togetherWith fadeOut()
+                }
+            ) {
+                it.Content()
+            }
+        }
     }
 }
 
@@ -53,7 +74,7 @@ object FavoritesTab : Tab {
         @Composable get() {
             val favoritesPainterIcon = rememberVectorPainter(Icons.Outlined.FavoriteBorder)
             return TabOptions(
-                index = 0u,
+                index = 2u,
                 title = "Favorites",
                 icon = favoritesPainterIcon
             )
@@ -61,6 +82,15 @@ object FavoritesTab : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(FavoritesScreen) { SlideTransition(navigator = it) }
+        Navigator(screen = FavoritesScreen) { navigator ->
+            AnimatedContent(
+                targetState = navigator.lastItem,
+                transitionSpec = {
+                    fadeIn() togetherWith fadeOut()
+                }
+            ) {
+                it.Content()
+            }
+        }
     }
 }
