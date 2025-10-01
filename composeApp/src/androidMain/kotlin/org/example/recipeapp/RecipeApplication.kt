@@ -5,6 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.example.recipeapp.di.appModules
+import org.example.recipeapp.di.platformModule
 
 class RecipeApplication : Application() {
     override fun onCreate() {
@@ -12,7 +13,7 @@ class RecipeApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RecipeApplication)
-            modules(appModules)
+            modules(appModules + platformModule)
         }
     }
 }

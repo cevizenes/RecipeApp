@@ -6,10 +6,15 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.example.recipeapp.core.util.Result
+import org.example.recipeapp.data.mapper.asFavorite
 import org.example.recipeapp.domain.usecase.GetRecipeDetailUseCase
+import org.example.recipeapp.domain.usecase.IsFavoriteUseCase
+import org.example.recipeapp.domain.usecase.ToggleFavoriteUseCase
 
 class DetailsViewModel(
-    private val getRecipeDetailUseCase: GetRecipeDetailUseCase
+    private val getRecipeDetailUseCase: GetRecipeDetailUseCase,
+    private val toggleFavorite: ToggleFavoriteUseCase,
+    private val isFavorite: IsFavoriteUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailsState())
@@ -17,6 +22,8 @@ class DetailsViewModel(
 
     private val _effect = Channel<DetailsEffect>(Channel.BUFFERED)
     val effect: Flow<DetailsEffect> = _effect.receiveAsFlow()
+
+    private fun toFavorite() = _state.value.recipe?.asFavorite()
 
     private var currentRecipeId: Int? = null
 
@@ -33,6 +40,14 @@ class DetailsViewModel(
         }
     }
 
+    private fun syncFavoriteFlag() {
+        viewModelScope.launch {
+            val recipe = _state.value.recipe ?: return@launch
+            val favorites = isFavorite(recipe.id)
+            _state.value = _state.value.copy(isFavorite = favorites)
+        }
+    }
+
     private fun loadRecipe(id: Int) {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
@@ -44,6 +59,7 @@ class DetailsViewModel(
                         isLoading = false,
                         error = null
                     )
+                    syncFavoriteFlag()
                 }
                 is Result.Error -> {
                     val errorMsg = result.message ?: result.exception.message ?: "Unknown error"
@@ -62,11 +78,14 @@ class DetailsViewModel(
 
     private fun toggleFavorite() {
         viewModelScope.launch {
-            val newValue = !_state.value.isFavorite
-            _state.value = _state.value.copy(isFavorite = newValue)
-
-            val message = if (newValue) "Added to favorites" else "Removed from favorites"
-            _effect.send(DetailsEffect.ShowMessage(message))
+            val favorite = toFavorite() ?: return@launch
+            val nowFavorite = toggleFavorite(favorite)
+            _state.value = _state.value.copy(isFavorite = nowFavorite)
+            _effect.send(
+                DetailsEffect.ShowMessage(
+                    if (nowFavorite) "Added to favorites" else "Removed from favorites"
+                )
+            )
         }
     }
 }

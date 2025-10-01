@@ -1,0 +1,23 @@
+CREATE TABLE favorites (
+  id INTEGER NOT NULL PRIMARY KEY,
+  title TEXT NOT NULL,
+  image TEXT,
+  readyInMinutes INTEGER,
+  score REAL
+);
+
+selectAll:
+SELECT * FROM favorites
+ORDER BY id DESC;
+
+selectById:
+SELECT * FROM favorites
+WHERE id = ?;
+
+insertOrReplace:
+INSERT OR REPLACE INTO favorites(id, title, image, readyInMinutes, score)
+VALUES (?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM favorites
+WHERE id = ?;

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import org.example.recipeapp.screens.favorites.FavoritesScreen
+import org.example.recipeapp.presentation.favorites.FavoritesScreen
 import org.example.recipeapp.presentation.home.HomeScreen
 import org.example.recipeapp.presentation.search.SearchScreen
 
