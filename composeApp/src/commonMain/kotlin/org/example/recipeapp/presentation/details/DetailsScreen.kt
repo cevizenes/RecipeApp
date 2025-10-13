@@ -195,7 +195,7 @@ private fun DetailContent(
                                         tint = Color.Black
                                     )
                                 }
-
+                                Spacer(modifier = Modifier.width(4.dp))
                                 IconButton(
                                     onClick = { onIntent(DetailsIntent.ToggleFavorite) },
                                     modifier = Modifier

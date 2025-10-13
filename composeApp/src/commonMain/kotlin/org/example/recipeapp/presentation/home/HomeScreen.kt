@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -25,7 +24,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import org.example.recipeapp.presentation.details.DetailScreen
 import org.example.recipeapp.presentation.home.HomeEffect.*
 import org.example.recipeapp.presentation.search.SearchByCategoryScreen
-import org.example.recipeapp.screens.filters.FiltersScreen
 import org.example.recipeapp.ui.components.RecipeCard
 import org.example.recipeapp.ui.components.SectionTitle
 import org.koin.compose.koinInject
@@ -59,9 +57,6 @@ object HomeScreen : Screen {
             onRecipeClick = { recipeId ->
                 navigator?.push(DetailScreen(recipeId))
             },
-            onFilterClick = {
-                navigator?.push(FiltersScreen)
-            },
             snackBarHostState = snackBarHostState,
             onCategoryClick = { type ->
                 navigator?.push(SearchByCategoryScreen(type))
@@ -75,7 +70,6 @@ private fun HomeContent(
     state: HomeState,
     onIntent: (HomeIntent) -> Unit,
     onRecipeClick: (Int) -> Unit,
-    onFilterClick: () -> Unit,
     snackBarHostState: SnackbarHostState,
     onCategoryClick: (String) -> Unit,
 ) {
@@ -88,22 +82,9 @@ private fun HomeContent(
             )
         } else {
             LazyColumn(
-                contentPadding = PaddingValues(bottom = 16.dp),
+                contentPadding = PaddingValues(top = 24.dp, bottom = 16.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Recipes", style = MaterialTheme.typography.titleLarge)
-                        IconButton(onClick = onFilterClick) {
-                            Text("⛭")
-                        }
-                    }
-                }
 
                 if (state.featuredRecipes.isNotEmpty()) {
                     item {
