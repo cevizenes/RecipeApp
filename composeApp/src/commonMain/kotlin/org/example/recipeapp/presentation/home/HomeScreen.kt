@@ -26,12 +26,12 @@ import org.example.recipeapp.presentation.home.HomeEffect.*
 import org.example.recipeapp.presentation.search.SearchByCategoryScreen
 import org.example.recipeapp.ui.components.RecipeCard
 import org.example.recipeapp.ui.components.SectionTitle
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 object HomeScreen : Screen {
     @Composable
     override fun Content() {
-        val homeViewModel = koinInject<HomeViewModel>()
+        val homeViewModel: HomeViewModel = koinViewModel()
         val state by homeViewModel.state.collectAsState()
         val navigator = LocalNavigator.current
 

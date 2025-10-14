@@ -28,13 +28,13 @@ import org.example.recipeapp.domain.model.Ingredient
 import org.example.recipeapp.domain.model.RecipeStep
 import org.example.recipeapp.navigation.LocalBottomBarVisible
 import org.example.recipeapp.presentation.details.DetailsEffect.*
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 data class DetailScreen(val recipeId: Int) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinInject<DetailsViewModel>()
+        val viewModel: DetailsViewModel = koinViewModel()
         val state by viewModel.state.collectAsState()
 
         val snackBarHostState = remember { SnackbarHostState() }

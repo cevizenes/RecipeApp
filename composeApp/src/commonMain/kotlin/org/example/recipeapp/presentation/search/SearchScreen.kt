@@ -20,12 +20,12 @@ import org.example.recipeapp.presentation.search.SearchEffect.*
 import org.example.recipeapp.ui.components.FilterChip
 import org.example.recipeapp.ui.components.RecipeCard
 import org.example.recipeapp.ui.components.SectionTitle
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 object SearchScreen : Screen {
     @Composable
     override fun Content() {
-        val searchViewModel = koinInject<SearchViewModel>()
+        val searchViewModel: SearchViewModel = koinViewModel()
         val state by searchViewModel.state.collectAsState()
         val navigator = LocalNavigator.current
 

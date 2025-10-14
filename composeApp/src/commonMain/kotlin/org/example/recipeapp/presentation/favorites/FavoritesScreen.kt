@@ -12,13 +12,13 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.example.recipeapp.presentation.details.DetailScreen
 import org.example.recipeapp.ui.components.RecipeCard
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.math.round
 
 object FavoritesScreen : Screen {
     @Composable
     override fun Content() {
-        val favoritesViewModel = koinInject<FavoritesViewModel>()
+        val favoritesViewModel: FavoritesViewModel = koinViewModel()
         val state by favoritesViewModel.state.collectAsState()
         val navigator = LocalNavigator.current
         val snackBarHostState = remember { SnackbarHostState() }
