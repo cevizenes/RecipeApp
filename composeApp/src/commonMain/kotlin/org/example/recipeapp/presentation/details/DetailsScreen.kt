@@ -3,7 +3,6 @@ package org.example.recipeapp.presentation.details
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -318,28 +317,6 @@ private fun DetailContent(
                             }
                         }
                     }
-
-                    item {
-                        Spacer(Modifier.height(24.dp))
-                        SectionHeader("Similar Recipes", Modifier.padding(horizontal = 20.dp))
-                        Spacer(Modifier.height(12.dp))
-                    }
-
-                    item {
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 20.dp),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(3) { index ->
-                                SimilarRecipeCard(
-                                    title = "Recipe ${index + 1}",
-                                    time = "30 min",
-                                    difficulty = "Easy"
-                                )
-                            }
-                        }
-                        Spacer(Modifier.height(24.dp))
-                    }
                 }
             }
         }
@@ -487,49 +464,5 @@ private fun NutritionRow(label: String, value: String) {
             text = value,
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
         )
-    }
-}
-
-@Composable
-private fun SimilarRecipeCard(
-    title: String,
-    time: String,
-    difficulty: String,
-) {
-    Card(
-        modifier = Modifier
-            .width(160.dp)
-            .height(200.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            )
-
-            Column(
-                modifier = Modifier.padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                    maxLines = 2
-                )
-                Text(
-                    text = "$time • $difficulty",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
     }
 }

@@ -1,35 +1,75 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# RecipeApp
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+RecipeApp is a Kotlin Multiplatform app that showcases recipes from the Spoonacular API using a shared UI with Compose Multiplatform for Android and iOS.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Features
+- Home with featured and popular recipes
+- Search by text (debounced) and quick chips
+- Recipe details
+- Favorites with local persistence
+- Snackbar-based error handling
+- Image loading with placeholders and loading indicators
+- Dark Mode support on both Android and iOS
 
-### Build and Run Android Application
+## Tech Stack
+- Kotlin Multiplatform (KMP)
+- Compose Multiplatform
+- Voyager (Navigation)
+- Koin (Dependency Injection)
+- Ktor (Networking)
+- Coil 3 (Images)
+- SQLDelight (Local storage)
+- Coroutines + StateFlow/Flow
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+## Architecture
+- MVVM + Unidirectional Data Flow
+- Contracts per screen: State, Intent, Effect
+- Shared domain/data layers across platforms
 
-### Build and Run iOS Application
+## Project Structure
+- `composeApp/src/commonMain/` — Shared UI, ViewModels, use cases, repository
+- `composeApp/src/androidMain/` — Android-specific
+- `composeApp/src/iosMain/` — iOS-specific
+- `iosApp/` — iOS launcher project
+- `build.gradle.kts`, `settings.gradle.kts` — Build configuration
+- 
+## Spoonacular API Key (Quick Setup)
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+Get your Spoonacular API key and paste it directly in the DI module for local testing.
 
----
+Edit `composeApp/src/commonMain/kotlin/org/example/recipeapp/di/AppModule.kt`:
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+```kotlin
+// AppModule.kt
+val networkModule = module {
+    single { createHttpClient() }
+    single {
+        SpoonacularApi(
+            client = get(),
+            apiKey = "YOUR_SPOONACULAR_API_KEY_HERE" // <-- put your key here for local runs
+        )
+    }
+}
+```
+
+## Screenshots
+
+### Android
+<table>
+  <tr>
+    <td><img src="screenshots/Home_Tab_Android.png" alt="Android Screenshot 1" width="260"/></td>
+    <td><img src="screenshots/Search_Tab_Android.png" alt="Android Screenshot 2" width="260"/></td>
+    <td><img src="screenshots/Favorites_Tab_Android.png" alt="Android Screenshot 3" width="260"/></td>
+    <td><img src="screenshots/Details_Screen_Android.png" alt="Android Screenshot 3" width="260"/></td>
+  </tr>
+</table>
+
+### iOS
+<table>
+  <tr>
+    <td><img src="screenshots/Home_Tab_Ios.png" alt="iOS Screenshot 1" width="260"/></td>
+    <td><img src="screenshots/Search_Tab_Ios.png" alt="iOS Screenshot 2" width="260"/></td>
+    <td><img src="screenshots/Favorites_Tab_Ios.png" alt="iOS Screenshot 3" width="260"/></td>
+    <td><img src="screenshots/Details_Screen_Ios.png" alt="iOS Screenshot 3" width="260"/></td>
+  </tr>
+</table>
