@@ -57,19 +57,31 @@ val networkModule = module {
 ### Android
 <table>
   <tr>
-    <td><img src="screenshots/Home_Tab_Android.png" alt="Android Screenshot 1" width="260"/></td>
-    <td><img src="screenshots/Search_Tab_Android.png" alt="Android Screenshot 2" width="260"/></td>
-    <td><img src="screenshots/Favorites_Tab_Android.png" alt="Android Screenshot 3" width="260"/></td>
-    <td><img src="screenshots/Details_Screen_Android.png" alt="Android Screenshot 3" width="260"/></td>
+    <td><img src="screenshots/Home_Tab_Android.png" alt="Android Home" width="300"/></td>
+    <td><img src="screenshots/Search_Tab_Android.png" alt="Android Search" width="300"/></td>
+    <td><img src="screenshots/Favorites_Tab_Android.png" alt="Android Favorites" width="300"/></td>
+    <td><img src="screenshots/Details_Screen_Android.png" alt="Android Details" width="300"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Home</b></td>
+    <td align="center"><b>Search</b></td>
+    <td align="center"><b>Favorites</b></td>
+    <td align="center"><b>Details</b></td>
   </tr>
 </table>
 
 ### iOS
 <table>
   <tr>
-    <td><img src="screenshots/Home_Tab_Ios.png" alt="iOS Screenshot 1" width="260"/></td>
-    <td><img src="screenshots/Search_Tab_Ios.png" alt="iOS Screenshot 2" width="260"/></td>
-    <td><img src="screenshots/Favorites_Tab_Ios.png" alt="iOS Screenshot 3" width="260"/></td>
-    <td><img src="screenshots/Details_Screen_Ios.png" alt="iOS Screenshot 3" width="260"/></td>
+    <td><img src="screenshots/Home_Tab_Ios.png" alt="iOS Home" width="300"/></td>
+    <td><img src="screenshots/Search_Tab_Ios.png" alt="iOS Search" width="300"/></td>
+    <td><img src="screenshots/Favorites_Tab_Ios.png" alt="iOS Favorites" width="300"/></td>
+    <td><img src="screenshots/Details_Screen_Ios.png" alt="iOS Details" width="300"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Home</b></td>
+    <td align="center"><b>Search</b></td>
+    <td align="center"><b>Favorites</b></td>
+    <td align="center"><b>Details</b></td>
   </tr>
 </table>
