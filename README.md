@@ -22,7 +22,7 @@ RecipeApp is a Kotlin Multiplatform app that showcases recipes from the Spoonacu
 - Coroutines + StateFlow/Flow
 
 ## Architecture
-- MVVM + Unidirectional Data Flow
+- MVI + Unidirectional Data Flow
 - Contracts per screen: State, Intent, Effect
 - Shared domain/data layers across platforms
 
