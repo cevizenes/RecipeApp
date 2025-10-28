@@ -4,6 +4,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import org.example.recipeapp.BuildKonfig
 import org.example.recipeapp.core.network.createHttpClient
 import org.example.recipeapp.data.remote.api.SpoonacularApi
 import org.example.recipeapp.data.repository.FavoritesRepositoryImpl
@@ -30,10 +31,7 @@ val networkModule = module {
     single {
         SpoonacularApi(
             client = get(),
-            apiKey = getProperty(
-                key = "SPOONACULAR_API_KEY",
-                defaultValue = "YOUR_API_KEY"
-            )
+            apiKey = BuildKonfig.API_KEY
         )
     }
 }

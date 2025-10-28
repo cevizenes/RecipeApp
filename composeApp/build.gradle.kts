@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,7 +8,17 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.buildkonfig)
 }
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(localPropertiesFile.inputStream())
+    }
+}
+
+val apiKey: String = localProperties.getProperty("API_KEY") ?: "default_api_key"
 
 kotlin {
     androidTarget {
@@ -123,5 +134,14 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+}
+
+buildkonfig {
+    packageName = "org.example.recipeapp"
+    
+    // Default config
+    defaultConfigs {
+        buildConfigField(com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING, "API_KEY", apiKey)
+    }
 }
 
