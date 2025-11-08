@@ -22,6 +22,7 @@ RecipeApp is a Kotlin Multiplatform app that showcases recipes from the Spoonacu
 - Coil 3 (Images)
 - SQLDelight (Local storage)
 - Coroutines + StateFlow/Flow
+- **Testing**: MockK, Turbine, Kotlin Test, Coroutines Test
 
 ## Architecture
 
@@ -32,11 +33,11 @@ RecipeApp is a Kotlin Multiplatform app that showcases recipes from the Spoonacu
 ## Project Structure
 
 - `composeApp/src/commonMain/` — Shared UI, ViewModels, use cases, repository
+- `composeApp/src/commonTest/` — Shared unit tests
 - `composeApp/src/androidMain/` — Android-specific
 - `composeApp/src/iosMain/` — iOS-specific
 - `iosApp/` — iOS launcher project
 - `build.gradle.kts`, `settings.gradle.kts` — Build configuration
--
 
 ## Setup
 
@@ -124,6 +125,67 @@ or in the terminal:
 ```bash
 ./gradlew :composeApp:iosSimulatorArm64Binaries.framework
 ```
+
+## 🧪 Testing
+
+This project includes comprehensive unit tests for all layers of the application.
+
+### Test Coverage
+
+- **Core Utilities**: Result sealed class tests (13 tests)
+- **Domain Layer**: UseCase tests for all business logic (32 tests)
+  - GetRandomRecipesUseCase
+  - SearchRecipesUseCase
+  - GetRecipeDetailUseCase
+  - AddFavoriteUseCase
+  - RemoveFavoriteUseCase
+  - ToggleFavoriteUseCase
+  - IsFavoriteUseCase
+  - ObserveFavoritesUseCase
+- **Data Layer**: Repository implementation tests (18 tests)
+  - RecipeRepositoryImpl
+  - FavoritesRepositoryImpl
+- **Presentation Layer**: ViewModel tests with MVI pattern (31 tests)
+  - HomeViewModel
+  - SearchViewModel
+  - DetailsViewModel
+  - FavoritesViewModel
+
+**Total: ~94 unit tests** covering all critical business logic and UI state management.
+
+### Running Tests
+
+Run all unit tests:
+
+```bash
+./gradlew :composeApp:testDebugUnitTest
+```
+
+Run tests with detailed output:
+
+```bash
+./gradlew :composeApp:testDebugUnitTest --info
+```
+
+Run specific test class:
+
+```bash
+./gradlew :composeApp:testDebugUnitTest --tests "org.example.recipeapp.presentation.home.HomeViewModelTest"
+```
+
+View test reports:
+
+```bash
+# Open HTML test report
+xdg-open composeApp/build/reports/tests/testDebugUnitTest/index.html
+```
+
+### Test Tools
+
+- **MockK**: Mocking framework for Kotlin
+- **Turbine**: Testing library for Flow and StateFlow
+- **Kotlin Test**: Kotlin's testing framework
+- **Coroutines Test**: Testing utilities for coroutines
 
 ## Screenshots
 
