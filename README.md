@@ -22,7 +22,7 @@ RecipeApp is a Kotlin Multiplatform app that showcases recipes from the Spoonacu
 - Coil 3 (Images)
 - SQLDelight (Local storage)
 - Coroutines + StateFlow/Flow
-- **Testing**: MockK, Turbine, Kotlin Test, Coroutines Test
+- Testing: MockK, Turbine, Kotlin Test, Coroutines Test
 
 ## Architecture
 
